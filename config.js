@@ -1,5 +1,5 @@
 exports.app = {};
-exports.app.port = (process.env.PORT && parseInt(process.env.PORT) > 0) ? parseInt(process.env.PORT) : 8082;
+exports.app.port = (process.env.PORT && parseInt(process.env.PORT) > 0) ? parseInt(process.env.PORT) : 80;
 
 exports.security = {};
 exports.security.token = process.env.TOKEN || '1234';
