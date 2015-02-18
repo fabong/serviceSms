@@ -1,5 +1,5 @@
 # Pull base image.
-FROM lineberty/nodejs
+FROM lineberty/nodejs:node-0.12
 
 MAINTAINER Lineberty <contact@lineberty.com>
 
