@@ -33,3 +33,5 @@ node_modules
 credentials
 
 .idea
+
+launch.sh
