@@ -21,6 +21,12 @@ exports.ovh.endpoint = exports.ovh.endpoint || '';
 exports.ovh.sender = exports.ovh.sender || 'smsService';
 exports.ovh.pullDelay = exports.ovh.pullDelay || 10000;
 
+exports.infobip = envConf.infobip || {};
+exports.infobip.username = exports.infobip.username || '';
+exports.infobip.password = exports.infobip.password || '';
+exports.infobip.sender = exports.infobip.sender || 'smsService';
+
+
 exports.mongoUrl = (envConf.mongoUrl && envConf.mongoUrl.length > 0) ? envConf.mongoUrl : 'mongodb://localhost/smsService';
 
 exports.languages = envConf.languages || {'fr_FR': {'subChoiceIntro' : 'Pour attribuer votre demande à l\'un des services, tapez :',
