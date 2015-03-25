@@ -39,12 +39,13 @@ This route subscribes a callback for a response from the sms receiver.
 
 #### Request Parameters
 
-| Parameters  | Types   | Required | Other information                                                      |
-| ----------- | ------- | -------- | ---------------------------------------------------------------------- |
-| phone       | string  | true     | the phone number to send the sms                                       |
-| callbackUrl | string  | true     | the url to send the response of the receiver                           |
-| description | string  | true     | a description if there is more than one subscription on the same phone |
-| lang        | string  | false    | the language used for some response                                    |
+| Parameters   | Types   | Required | Other information                                                      |
+| ------------ | ------- | -------- | ---------------------------------------------------------------------- |
+| phone        | string  | true     | the phone number to send the sms                                       |
+| serviceUrl   | string  | true     | the url to send the response of the receiver                           |
+| callbackPath | string  | true     | the relative url to send the response of the receiver                  |
+| description  | string  | true     | a description if there is more than one subscription on the same phone |
+| lang         | string  | false    | the language used for some response                                    |
 
 #### Response
 
@@ -61,7 +62,7 @@ This route unsubscribe a response callback.
 | Parameters  | Types   | Required | Other information                            |
 | ----------- | ------- | -------- | -------------------------------------------- |
 | phone       | string  | true     | the phone number to send the sms             |
-| callbackUrl | string  | true     | the url to send the response of the receiver |
+| serviceUrl  | string  | true     | the url to send the response of the receiver |
 
 #### Response
 
@@ -75,7 +76,8 @@ Return a 200 code status if the callback is correctly unregistered.
 
 ```js
 {
-    callbackUrl: {type: String, required: true, index: true},
+    serviceUrl: {type: String, required: true, index: true},
+    callbackPath: {type: String, required: true},
     phone: {type: String, required: true, index: true},
     description: {type: String, required: true},
     lang: {type: String, default: null},
