@@ -77,7 +77,7 @@ describe('Sms send', function () {
 
 describe('Sms subscribe', function () {
     it('should return 200 Ok', function (done) {
-        var params = {description: 'blabla', phone: phone, callbackUrl: localUrl};
+        var params = {description: 'blabla', phone: phone, serviceUrl: localUrl, callbackPath: ''};
         var url = localUrl + '/api/v1/subscribe';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
@@ -88,7 +88,7 @@ describe('Sms subscribe', function () {
     });
 
     it('with no description parameter should return 400 Error', function (done) {
-        var params = {phone: phone, callbackUrl: localUrl};
+        var params = {phone: phone, serviceUrl: localUrl, callbackPath: ''};
         var url = localUrl + '/api/v1/subscribe';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
@@ -99,7 +99,7 @@ describe('Sms subscribe', function () {
     });
 
     it('with wrong pattern of phone parameter should return 400 Error', function (done) {
-        var params = {description: 'blabla', phone: '033684273228', callbackUrl: localUrl};
+        var params = {description: 'blabla', phone: '033684273228', serviceUrl: localUrl, callbackPath: ''};
         var url = localUrl + '/api/v1/subscribe';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
@@ -124,7 +124,7 @@ describe('Sms subscribe', function () {
 
 describe('Sms unsubscribe', function () {
     it('should return 200 Ok', function (done) {
-        var params = {phone: phone, callbackUrl: localUrl};
+        var params = {phone: phone, serviceUrl: localUrl};
         var url = localUrl + '/api/v1/unsubscribe';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
@@ -135,7 +135,7 @@ describe('Sms unsubscribe', function () {
     });
 
     it('with wrong pattern of phone parameter should return 400 Error', function (done) {
-        var params = {phone: '033684273228', callbackUrl: localUrl};
+        var params = {phone: '033684273228', serviceUrl: localUrl};
         var url = localUrl + '/api/v1/unsubscribe';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
@@ -146,7 +146,7 @@ describe('Sms unsubscribe', function () {
     });
 
     it('with none existing subscription should return 401 Error', function (done) {
-        var params = {phone: phone, callbackUrl: localUrl+'blalaal'};
+        var params = {phone: phone, serviceUrl: localUrl+'blalaal'};
         var url = localUrl + '/api/v1/unsubscribe';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
@@ -203,7 +203,7 @@ describe('onIncomingSms', function () {
     });
 
     it('should callback when receiver responds', function (done) {
-        var params = {phone: phone, callbackUrl: 'http://localhost:'+port+'/', description: 'bablab'};
+        var params = {phone: phone, serviceUrl: 'http://localhost:'+port+'/', callbackPath: '', description: 'bablab'};
         var url = localUrl + '/api/v1/subscribe';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
@@ -228,7 +228,7 @@ describe('onIncomingSms', function () {
     });
 
     it('should delete the subscription when callback return 404', function (done) {
-        var params = {phone: phone, callbackUrl: 'http://localhost:'+port+'/404', description: 'bablab'};
+        var params = {phone: phone, serviceUrl: 'http://localhost:'+port+'/404', callbackPath: '', description: 'bablab'};
         var url = localUrl + '/api/v1/subscribe';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
@@ -239,7 +239,7 @@ describe('onIncomingSms', function () {
                 should.not.exist(err);
 
                 // check if the subscription is deleted
-                subscriptionManager.find({phone: phone, callbackUrl: 'http://localhost:'+port+'/404'}, function (err, subscriptions) {
+                subscriptionManager.find({phone: phone, serviceUrl: 'http://localhost:'+port+'/404', callbackPath: ''}, function (err, subscriptions) {
                     should.not.exist(err);
                     subscriptions.should.be.instanceof(Array).and.have.lengthOf(0);
                     done();
@@ -249,13 +249,13 @@ describe('onIncomingSms', function () {
     });
 
     it('should ask "which is recipient" because 2 subscriptions for this number', function (done) {
-        var params = {phone: phone, callbackUrl: 'http://localhost:'+port+'/', description: 'bablab'};
+        var params = {phone: phone, serviceUrl: 'http://localhost:'+port+'/', callbackPath: '', description: 'bablab'};
         var url = localUrl + '/api/v1/subscribe';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
         request(opts, function (error, response, body) { // save the subscription
             should.not.exist(error);
-            var params = {phone: phone, callbackUrl: 'http://localhost:'+port+'/otherUrl', description: 'bablab'};
+            var params = {phone: phone, serviceUrl: 'http://localhost:'+port+'/otherUrl', callbackPath: '', description: 'bablab'};
             var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
             request(opts, function (err, response, body) { // save the 2nd subscription
@@ -274,20 +274,20 @@ describe('onIncomingSms', function () {
     });
 
     it('saved 2 subscriptions; only the last one has to be saved in db', function (done) {
-        var params = {phone: phone, callbackUrl: 'http://localhost:'+port+'/', description: 'bablab'};
+        var params = {phone: phone, serviceUrl: 'http://localhost:'+port+'/', callbackPath: '', description: 'bablab'};
         var url = localUrl + '/api/v1/subscribe';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
         request(opts, function (error, response, body) { // save the subscription
             should.not.exist(error);
-            var params = {phone: phone, callbackUrl: 'http://localhost:'+port+'/', description: 'test2'};
+            var params = {phone: phone, serviceUrl: 'http://localhost:'+port+'/', callbackPath: '', description: 'test2'};
             var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
             request(opts, function (error, response, body) { // save the 2nd subscription
                 should.not.exist(error);
 
                 // check if there is only one subscription in the database
-                subscriptionManager.find({phone: phone, callbackUrl: 'http://localhost:'+port+'/'}, function (err, subscriptions) {
+                subscriptionManager.find({phone: phone, serviceUrl: 'http://localhost:'+port+'/'}, function (err, subscriptions) {
                     should.not.exist(err);
                     subscriptions.should.be.instanceof(Array).and.have.lengthOf(1);
                     subscriptions[0].description.should.be.instanceof(String).and.equal('test2');
