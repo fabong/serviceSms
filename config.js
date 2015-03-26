@@ -25,6 +25,7 @@ exports.infobip = envConf.infobip || {};
 exports.infobip.username = exports.infobip.username || '';
 exports.infobip.password = exports.infobip.password || '';
 exports.infobip.sender = exports.infobip.sender || 'smsService';
+exports.infobip.pullDelay = exports.infobip.pullDelay || 1000;
 
 
 exports.mongoUrl = (envConf.mongoUrl && envConf.mongoUrl.length > 0) ? envConf.mongoUrl : 'mongodb://localhost/smsService';
