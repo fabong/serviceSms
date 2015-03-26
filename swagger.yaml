@@ -127,13 +127,16 @@ definitions:
   subscribeRequest:
     required:
       - phone
-      - callbackUrl
+      - serviceUrl
+      - callbackPath
       - description
     properties:
       phone:
         type: string
         pattern: '^00[0-9]{1,3}[0-9]{7,14}$'
-      callbackUrl:
+      serviceUrl:
+        type: string
+      callbackPath:
         type: string
       description:
         type: string
@@ -142,10 +145,10 @@ definitions:
   unsubscribeRequest:
     required:
       - phone
-      - callbackUrl
+      - serviceUrl
     properties:
       phone:
         type: string
         pattern: '^00[0-9]{1,3}[0-9]{7,14}$'
-      callbackUrl:
+      serviceUrl:
         type: string

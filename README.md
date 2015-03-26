@@ -42,7 +42,7 @@ This route subscribes a callback for a response from the sms receiver.
 | Parameters   | Types   | Required | Other information                                                      |
 | ------------ | ------- | -------- | ---------------------------------------------------------------------- |
 | phone        | string  | true     | the phone number to send the sms                                       |
-| serviceUrl   | string  | true     | the url to send the response of the receiver                           |
+| serviceUrl   | string  | true     | the service url to send the response of the receiver                   |
 | callbackPath | string  | true     | the relative url to send the response of the receiver                  |
 | description  | string  | true     | a description if there is more than one subscription on the same phone |
 | lang         | string  | false    | the language used for some response                                    |
@@ -59,10 +59,10 @@ This route unsubscribe a response callback.
 
 #### Request Parameters
 
-| Parameters  | Types   | Required | Other information                            |
-| ----------- | ------- | -------- | -------------------------------------------- |
-| phone       | string  | true     | the phone number to send the sms             |
-| serviceUrl  | string  | true     | the url to send the response of the receiver |
+| Parameters  | Types   | Required | Other information                                    |
+| ----------- | ------- | -------- | ---------------------------------------------------- |
+| phone       | string  | true     | the phone number to send the sms                     |
+| serviceUrl  | string  | true     | the service url to send the response of the receiver |
 
 #### Response
 
