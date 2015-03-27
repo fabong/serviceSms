@@ -35,9 +35,9 @@ Return a 200 code status if the sms is correctly sent.
 ### Subscribe
 
 This route subscribes a callback for a response from the sms receiver.
-*If you want to register a callback with the same phone and serviceUrl than an existing one*, **the new register will overwrite it**.
+*If you want to register a callback with the same phone and serviceUrl than an existing one*, **the new register will overwrite it*.
 
-** The serviceUrl and callbackPath has to point to a POST route which accepts to receive an [incomingSms](#incomingSms) object.
+**The serviceUrl and callbackPath has to point to a POST route which accepts to receive an [incomingSms](#incomingSms) object.**
 
 #### Request Parameters
 
