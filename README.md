@@ -35,14 +35,16 @@ Return a 200 code status if the sms is correctly sent.
 ### Subscribe
 
 This route subscribes a callback for a response from the sms receiver.
-*If you want to register a callback with the same phone and callbackUrl than an existing one*, **the new register will overwrite it**.
+*If you want to register a callback with the same phone and serviceUrl than an existing one*, **the new register will overwrite it*.
+
+**The serviceUrl and callbackPath has to point to a POST route which accepts to receive an [incomingSms](#incomingsms) object.**
 
 #### Request Parameters
 
 | Parameters   | Types   | Required | Other information                                                      |
 | ------------ | ------- | -------- | ---------------------------------------------------------------------- |
 | phone        | string  | true     | the phone number to send the sms                                       |
-| serviceUrl   | string  | true     | the url to send the response of the receiver                           |
+| serviceUrl   | string  | true     | the service url to send the response of the receiver                   |
 | callbackPath | string  | true     | the relative url to send the response of the receiver                  |
 | description  | string  | true     | a description if there is more than one subscription on the same phone |
 | lang         | string  | false    | the language used for some response                                    |
@@ -52,6 +54,20 @@ This route subscribes a callback for a response from the sms receiver.
 Return a 200 code status if the callback is correctly registered and the sent sms.
 
 [See also send](#send)
+[See also incomingSms](#incomingsms)
+
+#### IncomingSms
+
+IncomingSms is the object returned to the serviceUrl and callbackPath when a sms is received.
+
+| Parameters   | Types   | Required | Other information                                                      |
+| ------------ | ------- | -------- | ---------------------------------------------------------------------- |
+| phone        | string  | true     | the phone number of the sender                                         |
+| msg          | string  | true     | the message of the incoming sms                                        |
+| description  | string  | false    | a description if there is more than one subscription on the same phone |
+| time         | number  | true     | the time when the sms was received by the provider                     |
+
+
 
 ### Unsubscribe
 
@@ -59,10 +75,10 @@ This route unsubscribe a response callback.
 
 #### Request Parameters
 
-| Parameters  | Types   | Required | Other information                            |
-| ----------- | ------- | -------- | -------------------------------------------- |
-| phone       | string  | true     | the phone number to send the sms             |
-| serviceUrl  | string  | true     | the url to send the response of the receiver |
+| Parameters  | Types   | Required | Other information                                    |
+| ----------- | ------- | -------- | ---------------------------------------------------- |
+| phone       | string  | true     | the phone number to send the sms                     |
+| serviceUrl  | string  | true     | the service url to send the response of the receiver |
 
 #### Response
 
