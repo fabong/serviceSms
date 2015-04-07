@@ -11,8 +11,8 @@
             "email": "support@lineberty.net"
         },
         "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+            "name": "MIT License (MIT)",
+            "url": "http://opensource.org/licenses/MIT"
         }
     },
     "host": "localhost:8082",
@@ -32,7 +32,7 @@
                 "tags": [
                     "sms"
                 ],
-                "summary": "Send SMS to the phone number and subscribe to get the receiver response",
+                "summary": "Send SMS to the phone number",
                 "description": "",
                 "operationId": "sendSms",
                 "produces": [

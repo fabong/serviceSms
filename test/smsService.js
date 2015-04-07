@@ -23,7 +23,7 @@ process.env.PORT=8082;
 
 require('../app.js');
 
-var phone = '0033684253208';
+var phone = '00336XXXXXXXX';
 var localUrl = 'http://127.0.0.1:8082';
 var token = '1234';
 
