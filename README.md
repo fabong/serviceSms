@@ -16,7 +16,7 @@ You have to send for all routes the token in the header
 
 ### Send
 
-This route sends the sms with the request parameters and subscribes a callback if there is both of callbackUrl and description parameters.
+This route sends the sms with the request parameters.
 
 #### Request Parameters
 
@@ -126,7 +126,7 @@ config='{"ovh":{"key":"ovh-key", "secret":"ovh-secret", "consumerKey":"ovh-consu
 Or modify the *config.js* and just run it like this :
 
 ```
-DEBUG=* node app.js
+node app.js
 ```
 
 
