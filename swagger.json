@@ -111,7 +111,7 @@
                 }
             }
         },
-        "/callbacks/phone/{phone}/serviceUrl/{serviceUrl}": {
+        "/callbacks/{phone}/{serviceUrl}": {
             "delete": {
                 "tags": [
                     "callback"
