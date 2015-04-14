@@ -1,3 +1,4 @@
+var debug = require('debug')('test:smsService');
 var should = require('should');
 var request = require('request');
 var bodyParser = require('body-parser');
@@ -23,7 +24,7 @@ process.env.PORT=8082;
 
 require('../app.js');
 
-var phone = '00336XXXXXXXX';
+var phone = '00336XXXXXXXX'; // TODO PUT A REAL NUMBER BEFORE TESTING
 var localUrl = 'http://127.0.0.1:8082';
 var token = '1234';
 
@@ -31,7 +32,7 @@ var token = '1234';
 describe('Sms send', function () {
     it('should return 200 Ok', function (done) {
         var params = {phone: phone, msg: 'sending test'};
-        var url = localUrl + '/api/v1/send';
+        var url = localUrl + '/api/v1/sms';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
         request(opts, function (error, response, body) {
@@ -43,7 +44,7 @@ describe('Sms send', function () {
 
     it('with a wrong pattern of phone parameter should return 400 Error', function (done) {
         var params = {phone: '033684273228', msg: 'sending test'};
-        var url = localUrl + '/api/v1/send';
+        var url = localUrl + '/api/v1/sms';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
         request(opts, function (error, response, body) {
@@ -54,7 +55,7 @@ describe('Sms send', function () {
 
     it('with no msg parameter should return 400 Error', function (done) {
         var params = {phone: phone};
-        var url = localUrl + '/api/v1/send';
+        var url = localUrl + '/api/v1/sms';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
         request(opts, function (error, response, body) {
@@ -65,7 +66,7 @@ describe('Sms send', function () {
 
     it('with no parameter should return 400 Error', function (done) {
         var params = {};
-        var url = localUrl + '/api/v1/send';
+        var url = localUrl + '/api/v1/sms';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
         request(opts, function (error, response, body) {
@@ -78,7 +79,7 @@ describe('Sms send', function () {
 describe('Sms subscribe', function () {
     it('should return 200 Ok', function (done) {
         var params = {description: 'blabla', phone: phone, serviceUrl: localUrl, callbackPath: ''};
-        var url = localUrl + '/api/v1/subscribe';
+        var url = localUrl + '/api/v1/callbacks/';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
         request(opts, function (error, response, body) {
@@ -89,7 +90,7 @@ describe('Sms subscribe', function () {
 
     it('with no description parameter should return 400 Error', function (done) {
         var params = {phone: phone, serviceUrl: localUrl, callbackPath: ''};
-        var url = localUrl + '/api/v1/subscribe';
+        var url = localUrl + '/api/v1/callbacks/';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
         request(opts, function (error, response, body) {
@@ -100,7 +101,7 @@ describe('Sms subscribe', function () {
 
     it('with wrong pattern of phone parameter should return 400 Error', function (done) {
         var params = {description: 'blabla', phone: '033684273228', serviceUrl: localUrl, callbackPath: ''};
-        var url = localUrl + '/api/v1/subscribe';
+        var url = localUrl + '/api/v1/callbacks/';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
         request(opts, function (error, response, body) {
@@ -111,7 +112,7 @@ describe('Sms subscribe', function () {
 
     it('with no parameter should return 400 Error', function (done) {
         var params = {};
-        var url = localUrl + '/api/v1/subscribe';
+        var url = localUrl + '/api/v1/callbacks/';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
         request(opts, function (error, response, body) {
@@ -124,9 +125,8 @@ describe('Sms subscribe', function () {
 
 describe('Sms unsubscribe', function () {
     it('should return 200 Ok', function (done) {
-        var params = {phone: phone, serviceUrl: localUrl};
-        var url = localUrl + '/api/v1/unsubscribe';
-        var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
+        var url = encodeURI(localUrl + '/api/v1/callbacks/?phone='+phone+'&serviceUrl='+localUrl);
+        var opts = {url: url, method:'DELETE', json:true, headers: {token: token}};
 
         request(opts, function (error, response, body) {
             (200).should.equal(response.statusCode);
@@ -135,9 +135,9 @@ describe('Sms unsubscribe', function () {
     });
 
     it('with wrong pattern of phone parameter should return 400 Error', function (done) {
-        var params = {phone: '033684273228', serviceUrl: localUrl};
-        var url = localUrl + '/api/v1/unsubscribe';
-        var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
+        var phone = '033684273228';
+        var url = encodeURI(localUrl + '/api/v1/callbacks/?phone='+phone+'&serviceUrl='+localUrl);
+        var opts = {url: url, method:'DELETE', json:true, headers: {token: token}};
 
         request(opts, function (error, response, body) {
             (400).should.equal(response.statusCode);
@@ -145,10 +145,9 @@ describe('Sms unsubscribe', function () {
         });
     });
 
-    it('with none existing subscription should return 401 Error', function (done) {
-        var params = {phone: phone, serviceUrl: localUrl+'blalaal'};
-        var url = localUrl + '/api/v1/unsubscribe';
-        var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
+    it('with none existing subscription should return 200 Ok', function (done) {
+        var url = encodeURI(localUrl + '/api/v1/callbacks/?phone='+phone+'&serviceUrl='+localUrl+'blalaal');
+        var opts = {url: url, method:'DELETE', json:true, headers: {token: token}};
 
         request(opts, function (error, response, body) {
             (200).should.equal(response.statusCode);
@@ -204,7 +203,7 @@ describe('onIncomingSms', function () {
 
     it('should callback when receiver responds', function (done) {
         var params = {phone: phone, serviceUrl: 'http://localhost:'+port+'/', callbackPath: '', description: 'bablab'};
-        var url = localUrl + '/api/v1/subscribe';
+        var url = localUrl + '/api/v1/callbacks/';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
         request(opts, function (error, response, body) { // save the subscription
@@ -229,7 +228,7 @@ describe('onIncomingSms', function () {
 
     it('should delete the subscription when callback return 404', function (done) {
         var params = {phone: phone, serviceUrl: 'http://localhost:'+port+'/404', callbackPath: '', description: 'bablab'};
-        var url = localUrl + '/api/v1/subscribe';
+        var url = localUrl + '/api/v1/callbacks/';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
         request(opts, function (error, response, body) { // save the subscription
@@ -250,7 +249,7 @@ describe('onIncomingSms', function () {
 
     it('should ask "which is recipient" because 2 subscriptions for this number', function (done) {
         var params = {phone: phone, serviceUrl: 'http://localhost:'+port+'/', callbackPath: '', description: 'bablab'};
-        var url = localUrl + '/api/v1/subscribe';
+        var url = localUrl + '/api/v1/callbacks/';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
         request(opts, function (error, response, body) { // save the subscription
@@ -275,7 +274,7 @@ describe('onIncomingSms', function () {
 
     it('saved 2 subscriptions; only the last one has to be saved in db', function (done) {
         var params = {phone: phone, serviceUrl: 'http://localhost:'+port+'/', callbackPath: '', description: 'bablab'};
-        var url = localUrl + '/api/v1/subscribe';
+        var url = localUrl + '/api/v1/callbacks/';
         var opts = {url: url, method:'POST', json:true, headers: {token: token}, body: params};
 
         request(opts, function (error, response, body) { // save the subscription
