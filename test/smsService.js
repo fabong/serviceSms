@@ -125,7 +125,7 @@ describe('Sms subscribe', function () {
 
 describe('Sms unsubscribe', function () {
     it('should return 200 Ok', function (done) {
-        var url = localUrl + '/api/v1/callbacks/phone/'+phone+'/serviceUrl/'+encodeURIComponent(localUrl);
+        var url = localUrl + '/api/v1/callbacks/'+phone+'/'+encodeURIComponent(localUrl);
         var opts = {url: url, method:'DELETE', json:true, headers: {token: token}};
 
         request(opts, function (error, response, body) {
@@ -135,7 +135,7 @@ describe('Sms unsubscribe', function () {
     });
 
     it('with none existing subscription should return 200 Ok', function (done) {
-        var url = localUrl + '/api/v1/callbacks/phone/'+phone+'/serviceUrl/'+encodeURIComponent(localUrl+'blalaal');
+        var url = localUrl + '/api/v1/callbacks/'+phone+'/'+encodeURIComponent(localUrl+'blalaal');
         var opts = {url: url, method:'DELETE', json:true, headers: {token: token}};
 
         request(opts, function (error, response, body) {
