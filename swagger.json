@@ -3,7 +3,7 @@
     "info": {
         "title": "smsService API",
         "description": "Send and receive SMS with smsService API",
-        "version": "0.4.1",
+        "version": "0.5.2",
         "termsOfService": "http://api.lineberty.net/terms/",
         "contact": {
             "name": "API Support",
@@ -27,7 +27,7 @@
         "application/json"
     ],
     "paths": {
-        "/send": {
+        "/sms": {
             "post": {
                 "tags": [
                     "sms"
@@ -69,14 +69,13 @@
                 }
             }
         },
-        "/subscribe": {
+        "/callbacks/": {
             "post": {
                 "tags": [
-                    "subscription"
+                    "callback"
                 ],
                 "summary": "Subscribe to get the receiver response",
-                "description":
-                "The callback (serviceUrl and callbackPath) is a POST route which accepts to receive an <a href='/#/definitions/incomingSms'>#incomingSms</a> object",
+                "description": "The callback (serviceUrl and callbackPath) is a POST route which accepts to receive an <a href='/#/definitions/incomingSms'>#incomingSms</a> object",
                 "operationId": "subscribe",
                 "produces": [
                     "application/json"
@@ -112,10 +111,10 @@
                 }
             }
         },
-        "/unsubscribe": {
-            "post": {
+        "/callbacks/phone/{phone}/serviceUrl/{serviceUrl}": {
+            "delete": {
                 "tags": [
-                    "subscription"
+                    "callback"
                 ],
                 "summary": "Unsubscribe to get a response from a phone",
                 "description": "",
@@ -132,13 +131,19 @@
                         "type": "string"
                     },
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "informations needed to unsubscribe",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/unsubscribeRequest"
-                        }
+                        "in": "path",
+                        "name": "phone",
+                        "description": "The phone number",
+                        "type": "string",
+                        "pattern": "^00[0-9]{1,3}[0-9]{7,14}$",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "serviceUrl",
+                        "description": "the service url of the callback",
+                        "type": "string",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -184,7 +189,7 @@
                     "pattern": "^00[0-9]{1,3}[0-9]{7,14}$"
                 },
                 "serviceUrl": {
-                    "type": "string",
+                    "type": "string"
                 },
                 "callbackPath": {
                     "type": "string",
@@ -194,21 +199,6 @@
                     "type": "string"
                 },
                 "lang": {
-                    "type": "string"
-                }
-            }
-        },
-        "unsubscribeRequest": {
-            "required": [
-                "phone",
-                "serviceUrl"
-            ],
-            "properties": {
-                "phone": {
-                    "type": "string",
-                    "pattern": "^00[0-9]{1,3}[0-9]{7,14}$"
-                },
-                "serviceUrl": {
                     "type": "string"
                 }
             }
