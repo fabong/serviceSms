@@ -125,7 +125,7 @@ describe('Sms subscribe', function () {
 
 describe('Sms unsubscribe', function () {
     it('should return 200 Ok', function (done) {
-        var url = encodeURI(localUrl + '/api/v1/callbacks/?phone='+phone+'&serviceUrl='+localUrl);
+        var url = localUrl + '/api/v1/callbacks/phone/'+phone+'/serviceUrl/'+encodeURIComponent(localUrl);
         var opts = {url: url, method:'DELETE', json:true, headers: {token: token}};
 
         request(opts, function (error, response, body) {
@@ -134,19 +134,8 @@ describe('Sms unsubscribe', function () {
         });
     });
 
-    it('with wrong pattern of phone parameter should return 400 Error', function (done) {
-        var phone = '033684273228';
-        var url = encodeURI(localUrl + '/api/v1/callbacks/?phone='+phone+'&serviceUrl='+localUrl);
-        var opts = {url: url, method:'DELETE', json:true, headers: {token: token}};
-
-        request(opts, function (error, response, body) {
-            (400).should.equal(response.statusCode);
-            done();
-        });
-    });
-
     it('with none existing subscription should return 200 Ok', function (done) {
-        var url = encodeURI(localUrl + '/api/v1/callbacks/?phone='+phone+'&serviceUrl='+localUrl+'blalaal');
+        var url = localUrl + '/api/v1/callbacks/phone/'+phone+'/serviceUrl/'+encodeURIComponent(localUrl+'blalaal');
         var opts = {url: url, method:'DELETE', json:true, headers: {token: token}};
 
         request(opts, function (error, response, body) {
