@@ -10,6 +10,7 @@ smsService is a sms sender and receiver application. It allows services or users
 
 ```js
 {
+    _id: {type: String, default: function () { return new ObjectId();}},
     serviceUrl: {type: String, required: true, index: true},
     callbackPath: {type: String, required: true},
     phone: {type: String, required: true, index: true},
@@ -25,6 +26,7 @@ Received Sms is stores in this collection when there is multiple subscription on
 
 ```js
 {
+    _id: {type: String, default: function () { return new ObjectId();}},
     phone: {type: String, required: true, index: true},
     msg: {type: String, required: true},
     pos: {type: Number, default: 0},
