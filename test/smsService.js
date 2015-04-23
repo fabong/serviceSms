@@ -20,11 +20,14 @@ catch (err) {
 
 var dispatcher = require('../lib/dispatcher');
 
+if(!envConf) var envConf = {};
+envConf.db = envConf.db || {};
+envConf.db.url = 'mongodb://192.168.59.103/serviceSmsTest';
 process.env.PORT=8082;
 
 require('../app.js');
 
-var phone = '00336XXXXXXXX'; // TODO PUT A REAL NUMBER BEFORE TESTING
+var phone = '00336XXXXXXXXX'; // TODO PUT A REAL NUMBER BEFORE TESTING
 var localUrl = 'http://127.0.0.1:8082';
 var token = '1234';
 
@@ -148,7 +151,7 @@ describe('Sms unsubscribe', function () {
 
 describe('onIncomingSms', function () {
     var dispatcherMock = sinon.mock(dispatcher);
-    var port = 3000;
+    var port = 5043;
 
     before(function (done) {
         // Server to simulate the callback
