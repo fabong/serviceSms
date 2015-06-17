@@ -3,7 +3,7 @@
     "info": {
         "title": "smsService API",
         "description": "Send and receive SMS with smsService API",
-        "version": "0.6.1",
+        "version": "0.6.3",
         "termsOfService": "http://api.lineberty.net/terms/",
         "contact": {
             "name": "API Support",

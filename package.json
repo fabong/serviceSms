@@ -1,6 +1,6 @@
 {
   "name": "lnb-sms-service",
-  "version": "0.1.0",
+  "version": "0.6.3",
   "main": "app.js",
   "scripts": {
     "pretest": "jshint .",
